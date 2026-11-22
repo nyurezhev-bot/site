@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Никита Юрежев · фитнес-сопровождение</title>
+<meta name="description" content="Онлайн-ведение и персональные тренировки в DDX «Технопарк». Услуги, цены, договор-оферта и реквизиты ИП Юрежева Н. И.">
+<link rel="stylesheet" href="fonts.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2710%27 fill=%27%23ff6a00%27/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#ffffff;
+  --panel:#f6f6f7;
+  --ink:#0a0a0b;
+  --soft:#b3b3ba;
+  --muted:#6b6b74;
+  --line:#e8e8ec;
+  --accent:#ff6a00;
+  --accent-soft:#fff2e8;
+  --accent-line:#ffd2b0;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --sans:"Geologica",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --wrap:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.55;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;font-weight:500;border-radius:16px;transition:transform .15s ease,background .2s;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn-a{background:var(--accent);color:var(--ink);box-shadow:0 8px 28px -10px rgba(255,106,0,.7)}
+.btn-a:hover{background:#ff7a1a}
+.btn-lg{font-size:17px;padding:17px 30px}
+.btn-sm{font-size:14px;padding:10px 16px;border-radius:12px}
+
+/* шапка */
+.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;width:min(860px,calc(100% - 32px));display:flex;align-items:center;gap:28px;padding:10px 12px 10px 24px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:20px;letter-spacing:-.04em}
+.logo i{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.nav-links{display:flex;gap:26px;margin-left:auto;font-size:15px;font-weight:400;color:var(--muted)}
+.nav-links a:hover{color:var(--ink)}
+.nl-short{display:none}
+
+/* первый экран */
+.hero{padding:150px 0 0;text-align:center}
+h1{font-weight:700;font-size:clamp(40px,5.6vw,76px);line-height:1.03;letter-spacing:-.05em;max-width:900px;margin:0 auto}
+h1 em{font-style:normal;color:var(--soft);display:block}
+.hero-kick{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 auto 18px}
+h1 .nw,.hero-kick .nw{white-space:nowrap}
+@media (max-width:640px){.hero-kick{font-size:11px;letter-spacing:.04em;line-height:1.7}.hero-kick .kd{display:none}.hero-kick .nw{display:block}}
+.hero-sub{max-width:520px;margin:24px auto 0;font-size:18px;color:var(--muted)}
+.hero .btn{margin-top:34px}
+
+/* место под голубя */
+.stage{position:relative;height:clamp(440px,64vh,660px);margin-top:20px}
+.stage::before{content:"";position:absolute;left:50%;bottom:6%;width:min(700px,90vw);height:46%;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,106,0,.16),rgba(255,106,0,.05) 55%,transparent);pointer-events:none}
+.stage::after{content:"";position:absolute;left:50%;bottom:7%;width:min(340px,60vw);height:24px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(10,10,11,.13),transparent);pointer-events:none}
+#pigeon{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);height:88%;aspect-ratio:1122/1402;z-index:2}
+#pigeon img,#pigeon canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#pigeon canvas{opacity:0;transition:opacity .5s}
+#pigeon.live canvas{opacity:1}
+#pigeon.live img{visibility:hidden}
+#pigeon.empty{border:1.5px dashed var(--accent-line);border-radius:46% 46% 32% 32%/40% 40% 22% 22%;display:grid;place-items:center;background:rgba(255,255,255,.4)}
+#pigeon.empty span{font-family:var(--mono);font-size:12px;color:#d59a6e}
+
+/* разделы */
+.sec{padding:120px 0 0}
+.h2{font-weight:700;font-size:clamp(32px,3.8vw,50px);line-height:1.05;letter-spacing:-.045em;max-width:760px}
+.h2 em{font-style:normal;color:var(--soft)}
+
+/* услуги и цены: три карточки, переключатель срока (по референсу Никиты 21.11) */
+.checks{list-style:none;margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.checks li{display:grid;grid-template-columns:22px 1fr;gap:12px;font-size:15px;line-height:1.45}
+.checks li::before{content:"";width:20px;height:20px;border-radius:7px;background:var(--accent-soft);margin-top:1px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23ff6a00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.price-head{text-align:center;display:flex;flex-direction:column;align-items:center}
+.price-head .h2{margin:0 auto}
+.price-head p{color:var(--muted);font-size:17px;margin-top:16px;max-width:520px}
+.period{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:36px;font-weight:500;font-size:16px;flex-wrap:wrap}
+.period .lbl{color:var(--muted);transition:color .2s;cursor:pointer;user-select:none}
+.period .lbl.on{color:var(--ink)}
+.period .save{color:var(--accent);font-weight:600}
+.sw{position:relative;width:52px;height:30px;border-radius:99px;background:#d9d9de;border:0;cursor:pointer;transition:background .25s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(10,10,11,.25);transition:transform .3s cubic-bezier(.3,.7,.3,1.2)}
+.sw[aria-checked="true"]{background:var(--accent)}
+.sw[aria-checked="true"]::after{transform:translateX(22px)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:44px;perspective:1400px;align-items:stretch}
+.plan{position:relative;border:1px solid var(--line);border-radius:26px;padding:32px 26px 26px;background:#fff;display:flex;flex-direction:column;text-align:center;transform:translateY(50px);transition:transform 1.4s cubic-bezier(.2,.85,.25,1) .3s}
+.plan.pop{border:2px solid var(--accent);z-index:2;box-shadow:0 40px 80px -50px rgba(255,106,0,.55)}
+.plan:not(.pop){margin-top:20px}
+.plans.seen .plan{transform:none}
+@media (min-width:901px){
+  .plans.seen .plan.l{transform:translateX(30px) scale(.94) rotateY(10deg);transform-origin:right center}
+  .plans.seen .plan.r{transform:translateX(-30px) scale(.94) rotateY(-10deg);transform-origin:left center}
+  .plans.seen .plan.pop{transform:translateY(-20px)}
+}
+.badge-pop{position:absolute;top:-2px;right:-2px;display:flex;align-items:center;gap:5px;background:var(--accent);color:var(--ink);font-size:13px;font-weight:600;padding:5px 12px;border-radius:0 24px 0 14px}
+.badge-pop svg{width:14px;height:14px}
+.plan .nm{font-weight:600;font-size:16px;color:var(--muted)}
+.plan .sum{margin-top:18px;display:flex;align-items:baseline;justify-content:center;gap:8px;flex-wrap:wrap}
+.plan .num{font-weight:700;font-size:clamp(36px,3.5vw,48px);letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.plan .per{font-size:14.5px;font-weight:500;color:var(--muted)}
+.plan .bill{font-size:13px;color:var(--muted);margin-top:8px;min-height:2.8em}
+.plan .checks{margin-top:18px;text-align:left}
+.plan .checks{margin-bottom:22px}
+.plan hr{border:0;border-top:1px solid var(--line);margin:auto 0 18px;width:100%}
+.plan .go{display:flex;align-items:center;justify-content:center;text-align:center;width:100%;border-radius:14px;padding:14px 18px;font-weight:600;font-size:16px;border:1px solid var(--line);transition:background .25s,border-color .25s,box-shadow .25s}
+.plan .go:hover{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--accent)}
+.plan.pop .go{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.plan .desc{font-size:13px;line-height:1.55;color:var(--muted);margin-top:16px}
+.plan .desc b{font-weight:600;color:var(--ink)}
+.who{margin:28px auto 0;font-size:14.5px;color:var(--muted);max-width:760px;text-align:center}
+@media (max-width:900px){
+  .plans{grid-template-columns:minmax(0,1fr);max-width:520px;margin-left:auto;margin-right:auto}
+  .plan.pop{order:-1}
+  .plan:not(.pop){margin-top:0}
+  .plan .bill{min-height:0}
+}
+.fmt{position:relative;display:flex;width:max-content;margin:32px auto 0;padding:5px;border-radius:16px;background:var(--panel)}
+.fmt::before{content:"";position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:12px;background:#fff;box-shadow:0 6px 18px -10px rgba(10,10,11,.35);transition:transform .35s cubic-bezier(.3,.7,.3,1)}
+.fmt[data-at="1"]::before{transform:translateX(100%)}
+.fmt-b{position:relative;z-index:1;min-width:132px;padding:11px 26px;border-radius:12px;border:0;background:none;font:inherit;font-size:16px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .25s}
+.fmt-b[aria-selected="true"]{color:var(--ink)}
+.grp[hidden]{display:none}
+.period-note{text-align:center;color:var(--muted);font-size:15px;margin-top:26px}
+.plan .nm span{font-weight:400}
+.extra{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;max-width:760px;margin:32px auto 0}
+.extra div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border:1px solid var(--line);border-radius:18px;padding:18px 22px}
+.extra small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.extra b{font-weight:600;font-size:22px;letter-spacing:-.03em;white-space:nowrap}
+.extra-note{text-align:center;color:var(--muted);font-size:13.5px;margin-top:14px}
+@media (max-width:640px){.extra{grid-template-columns:minmax(0,1fr)}.fmt-b{min-width:0;padding:11px 22px}}
+.anchor{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:640px;margin:30px auto 0;padding:18px 24px;border:1.5px dashed #d6d6dc;border-radius:20px}
+.anchor-l{display:flex;flex-direction:column;text-align:left}
+.anchor-t{font-weight:600;font-size:18px;letter-spacing:-.01em}
+.anchor-s{font-size:13.5px;color:var(--muted);margin-top:2px}
+.anchor-p{font-weight:700;font-size:30px;letter-spacing:-.04em;white-space:nowrap}
+.anchor-bridge{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:14.5px;margin-top:14px}
+.anchor-bridge svg{width:16px;height:16px;color:var(--accent)}
+.plan .tagl{font-size:14px;line-height:1.45;color:var(--muted);margin-top:8px}
+.plan .save-b{align-self:center;margin-top:14px;font-size:13px;font-weight:600;color:#c85300;background:var(--accent-soft);padding:5px 12px;border-radius:99px}
+@media (max-width:900px){.plan .tagl{min-height:0}.plan.l{order:1}}
+@media (max-width:640px){.anchor{padding:16px 18px}.anchor-p{font-size:26px}}
+.dots{display:grid;grid-template-columns:repeat(6,12px);gap:7px;justify-content:center;margin:16px auto 2px}
+.dots.d4,.dots.d8{grid-template-columns:repeat(4,12px)}
+.dots i.off{display:none}
+.plan .save-b[hidden]{display:none}
+#g-online .plan .desc{margin-top:auto;padding-top:20px}
+.dots{min-height:31px;align-content:center}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--accent);opacity:.9;transform:scale(0);transition:transform .35s cubic-bezier(.3,.7,.3,1.4)}
+.plans.seen .dots i{transform:scale(1)}
+.plans.seen .dots i:nth-child(1){transition-delay:0.55s}
+.plans.seen .dots i:nth-child(2){transition-delay:0.60s}
+.plans.seen .dots i:nth-child(3){transition-delay:0.65s}
+.plans.seen .dots i:nth-child(4){transition-delay:0.70s}
+.plans.seen .dots i:nth-child(5){transition-delay:0.75s}
+.plans.seen .dots i:nth-child(6){transition-delay:0.80s}
+.plans.seen .dots i:nth-child(7){transition-delay:0.85s}
+.plans.seen .dots i:nth-child(8){transition-delay:0.90s}
+.plans.seen .dots i:nth-child(9){transition-delay:0.95s}
+.plans.seen .dots i:nth-child(10){transition-delay:1.00s}
+.plans.seen .dots i:nth-child(11){transition-delay:1.05s}
+.plans.seen .dots i:nth-child(12){transition-delay:1.10s}
+#g-gym .plan .desc{margin-top:auto;padding-top:20px}
+#g-gym .plan .save-b{margin-bottom:4px}
+@media (prefers-reduced-motion:reduce){.dots i{transform:none}}
+.inc{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 32px;max-width:900px;margin:30px auto 0;padding:20px 4px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+#g-gym .inc{grid-template-columns:repeat(4,minmax(0,1fr))}
+.inc li{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.4;color:var(--muted);text-align:left}
+.inc svg{width:18px;height:18px;color:var(--accent);flex:none;margin-top:1px}
+@media (max-width:900px){.inc,#g-gym .inc{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}}
+@media (max-width:420px){.inc li{font-size:13.5px}}
+#uslugi .plan{justify-content:center}
+.incd{max-width:900px;margin:26px auto 0;text-align:center}
+.incd summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;font-size:14.5px;font-weight:500;color:var(--muted);padding:6px 10px;border-radius:10px}
+.incd summary::-webkit-details-marker{display:none}
+.incd summary::after{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+.incd[open] summary::after{transform:rotate(-135deg) translateY(-1px)}
+.incd summary:hover{color:var(--ink)}
+.incd .inc{margin-top:14px}
+.anchor-line{text-align:center;color:var(--muted);font-size:15px;margin-top:26px}
+.anchor-line b{color:var(--ink);font-weight:600}
+.fineprint{max-width:760px;margin:40px auto 0;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.55;color:var(--muted);text-align:center}
+.fineprint p+p{margin-top:6px}
+.fineprint b{font-weight:600;color:#4a4a52}
+.fineprint a{text-decoration:underline;text-underline-offset:2px}
+/* вопросы: бегущие ленты карточек */
+.faq-sec{position:relative;overflow:hidden;padding-bottom:40px}
+.faq-sec::before{content:"";position:absolute;left:50%;bottom:-120px;width:min(1200px,120vw);height:520px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,106,0,.13),rgba(255,106,0,.04) 60%,transparent);pointer-events:none}
+.fq-rows{position:relative;display:flex;flex-direction:column;gap:28px;margin-top:44px;max-width:1240px;margin-left:auto;margin-right:auto}
+.fq-row{overflow:hidden;padding:8px 0 34px;margin:-8px 0 -34px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);cursor:default}
+.fq-track{display:flex;width:max-content;animation:fq-left var(--dur,60s) linear infinite}
+.fq-row.rev .fq-track{animation-name:fq-right}
+.fq-row:hover .fq-track,.fq-row.paused .fq-track{animation-play-state:paused}
+@keyframes fq-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes fq-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.fq-half{display:flex;gap:28px;padding-right:28px;align-items:stretch}
+.fq{flex:none;width:384px;background:#fff;border-radius:18px;padding:24px 26px;box-shadow:0 0 0 1px var(--line),0 18px 40px -28px rgba(10,10,11,.35)}
+.fq h3{font-weight:600;font-size:18px;letter-spacing:-.015em;line-height:1.3}
+.fq p{color:var(--muted);font-size:15.5px;line-height:1.55;margin-top:12px}
+.fq p+p{margin-top:8px}
+@media (max-width:640px){.fq{width:300px;padding:20px}.fq h3{font-size:16.5px}.fq p{font-size:14.5px}.fq-rows{gap:18px}.fq-half{gap:16px;padding-right:16px}}
+@media (prefers-reduced-motion:reduce){
+  .fq-row{-webkit-mask-image:none;mask-image:none;overflow:visible}
+  .fq-track{animation:none;width:auto}
+  .fq-half{flex-wrap:wrap;justify-content:center;padding:0 16px}
+  .fq-half[aria-hidden]{display:none}
+}
+.save-m{display:none}
+@media (max-width:640px){
+  .period .save{display:none}
+  .save-m{display:block;text-align:center;color:var(--accent);font-weight:600;font-size:14px;margin-top:8px}
+  .plans{margin-top:28px}
+  .plan.pop{padding-top:44px}
+}
+@media (prefers-reduced-motion:reduce){.plan{transform:none!important;transition:none}}
+/* 21.11 (Никита): на телефоне цены как на ПК — видно все три сразу: основная крупно по центру и приподнята,
+   боковые выглядывают из-за неё, меньше и развёрнуты веером. Свайп или нажатие на боковую — она выезжает в центр (по кругу).
+   Положение каждой карточки считает скрипт (--x, --s, --r, --y, --z). При появлении боковые выезжают из-за основной */
+.car-dots{display:none}
+@media (max-width:900px){
+  .plans{display:grid;grid-template-columns:var(--cw);justify-content:center;max-width:none;width:100vw;margin-left:calc(50% - 50vw);margin-right:0;padding:24px 0 34px;overflow:hidden;touch-action:pan-y;--cw:min(76vw,340px)}
+  .plans .plan,.plans .plan.pop,.plans .plan.l{order:0;grid-area:1/1;user-select:none;-webkit-user-select:none}
+  .plans .plan,.plans.seen .plan{transform:perspective(900px) translateX(var(--x,0px)) translateY(var(--y,0px)) scale(var(--s,1)) rotateY(var(--r,0deg));z-index:var(--z,1);transition:transform .5s cubic-bezier(.2,.8,.25,1),border-color .35s,box-shadow .35s}
+  .plans.intro .plan{transition:transform 1.3s cubic-bezier(.2,.85,.25,1) .15s}
+  .plans.drag .plan{transition:none}
+  .car-dots{display:flex;justify-content:center;gap:8px;margin:-14px 0 6px}
+  .car-dots button{width:8px;height:8px;padding:0;border:0;border-radius:99px;background:#d6d6dc;cursor:pointer;transition:width .3s,background .3s}
+  .car-dots button.on{width:22px;background:var(--accent)}
+  /* 21.11 (Никита): оранжевая рамка и свечение — у карточки, которая сейчас по центру; плашка «Основной формат» остаётся на своей */
+  .plans .plan.pop{border:1px solid var(--line);box-shadow:none}
+  .plans .plan.pop .badge-pop{top:-1px;right:-1px}
+  .plans .plan.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 40px 80px -50px rgba(255,106,0,.55)}
+  /* 21.11 (Никита): у боковых карточек прячем только деньги (цена, экономия, сумма за срок) — их обрезки по краю экрана
+     выглядели как сбой. Название, точки и подпись остаются как были. При свайпе цифры проявляются по мере выезда в центр */
+  .plans .plan .sum,.plans .plan .save-b,.plans .plan .bill{opacity:max(0,calc(1 - var(--a,0)*1.6));transition:opacity .45s}
+  .plans.drag .plan .sum,.plans.drag .plan .save-b,.plans.drag .plan .bill{transition:none}
+}
+@media (max-width:640px){.plans .plan{padding-left:18px;padding-right:18px}.plans .save-b{white-space:nowrap}}
+@media (max-width:370px){.plans .save-b{font-size:12px;padding:5px 10px}}
+
+/* оплата и возврат */
+.terms{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:48px}
+.term{background:var(--panel);border-radius:24px;padding:30px}
+.term h3{font-weight:600;font-size:20px;letter-spacing:-.02em}
+.term p{color:var(--muted);font-size:15.5px;margin-top:10px}
+
+/* вопросы */
+.faq{max-width:820px;margin-top:40px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;font-size:18px;font-weight:500;letter-spacing:-.01em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary i{flex:none;width:20px;height:20px;position:relative;transition:transform .3s}
+.faq summary i::before,.faq summary i::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:1.8px;background:var(--ink);transform:translate(-50%,-50%);border-radius:2px}
+.faq summary i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq details[open] summary i{transform:rotate(45deg)}
+.faq details[open] summary i::before,.faq details[open] summary i::after{background:var(--accent)}
+.faq details p{color:var(--muted);font-size:16.5px;max-width:720px;padding-bottom:10px}
+.faq details p:last-child{padding-bottom:24px}
+
+/* документы: вкладки (по референсу animated tabs, светлая версия) */
+.dtabs{max-width:920px;margin:44px auto 0}
+.docs-head p{font-size:16px;margin-top:10px}
+.dt-bar{margin:0 auto}
+.dt-bar{position:relative;display:flex;gap:4px;width:max-content;max-width:100%;padding:5px;border-radius:16px;background:var(--panel)}
+.dt-ind{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:12px;background:#fff;box-shadow:0 6px 18px -10px rgba(10,10,11,.4);transition:transform .55s cubic-bezier(.3,1.35,.45,1),width .55s cubic-bezier(.3,1.35,.45,1)}
+.dt-b{position:relative;z-index:1;padding:10px 20px;border:0;border-radius:12px;background:none;font:inherit;font-size:15px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .25s}
+.dt-b[aria-selected="true"]{color:var(--ink)}
+.dt-panel{margin-top:10px;border:1px solid var(--line);border-radius:26px;padding:28px;background:#fff;box-shadow:0 30px 60px -45px rgba(10,10,11,.35);min-height:330px}
+.dt-pane{display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;align-items:start}
+.dt-pane[hidden]{display:none}
+.dt-pane.in{animation:dtin .55s cubic-bezier(.25,1.1,.35,1) both}
+@keyframes dtin{from{opacity:0;transform:translateX(-10px) scale(.96);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+.dt-sheet{position:relative;aspect-ratio:3/4;border-radius:12px;background:#fff;padding:16px 15px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 18px 36px -24px rgba(10,10,11,.35);font-size:5.6px;line-height:1.42;color:#55555d;text-align:left;user-select:none;pointer-events:none}
+.dt-sheet::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(transparent,#fff 85%)}
+.dt-sheet .mh{display:flex;align-items:center;gap:4px;font-weight:700;font-size:6.6px;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em}
+.dt-sheet .mh i{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.dt-sheet h4{font-weight:700;font-size:10px;line-height:1.15;color:var(--ink);letter-spacing:-.03em}
+.dt-sheet .ms{font-size:6.4px;color:var(--muted);margin-top:2px}
+.dt-sheet .mm{font-size:5.4px;color:var(--muted);margin:5px 0 6px;padding-bottom:5px;border-bottom:.5px solid var(--line)}
+.dt-sheet h5{font-weight:600;font-size:6.4px;color:var(--ink);margin:6px 0 2px}
+.dt-sheet p{margin:0 0 2.5px}
+.dt-sheet .f{display:inline-block;min-width:26px;border-bottom:.5px solid var(--ink)}
+.dt-body h3{font-weight:700;font-size:clamp(22px,2.2vw,28px);letter-spacing:-.035em;line-height:1.15}
+.dt-lead{color:var(--muted);font-size:16px;margin-top:10px;max-width:560px}
+.dt-body .checks{margin-top:18px}
+.dt-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.dt-open,.dt-pdf{display:inline-flex;align-items:center;justify-content:center;border-radius:13px;padding:12px 18px;font-weight:500;font-size:15px;transition:background .2s,border-color .2s}
+.dt-open{background:var(--ink);color:#fff}
+.dt-open:hover{background:#2a2a2e}
+.dt-pdf{border:1px solid var(--line)}
+.dt-pdf:hover{border-color:#cfcfd6}
+@media (max-width:700px){
+  .dt-pane{grid-template-columns:minmax(0,1fr);gap:20px}
+  .dt-sheet{aspect-ratio:auto;height:150px;max-width:260px;margin:0 auto;width:100%}
+  .dt-panel{padding:20px;border-radius:22px}
+  .dt-bar{width:100%}.dt-b{flex:1;padding:10px 6px}
+}
+@media (prefers-reduced-motion:reduce){.dt-pane.in{animation:none}.dt-ind{transition:none}}
+
+/* реквизиты: подвал по центру */
+footer{margin-top:110px;border-top:1px solid var(--line);background:#fff}
+.ft{max-width:880px;margin:0 auto;padding:56px 24px 44px;display:flex;flex-direction:column;align-items:center;gap:32px}
+.ft-soc{display:flex;gap:14px}
+.soc{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);transition:transform .25s cubic-bezier(.3,1.4,.5,1),background .25s,border-color .25s,color .25s,box-shadow .25s}
+.soc svg{width:20px;height:20px}
+.soc:hover{transform:translateY(-3px);background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 12px 24px -12px rgba(255,106,0,.8)}
+.ft-req{display:grid;grid-template-columns:auto auto;gap:6px 18px;font-size:13px;line-height:1.5;color:var(--muted)}
+.ft-req dt{text-align:right;color:var(--soft)}
+.ft-req dd{text-align:left}
+@media (max-width:640px){.ft{padding:44px 16px 36px;gap:26px}.ft-req{grid-template-columns:1fr;gap:0;text-align:center}.ft-req dt,.ft-req dd{text-align:center}.ft-req dd{margin-bottom:8px}}
+
+/* появление первого экрана */
+.in{opacity:0;transform:translateY(14px);animation:up .8s cubic-bezier(.2,.7,.2,1) forwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.45s}
+@keyframes up{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.in{opacity:1;transform:none}html{scroll-behavior:auto}}
+
+@media (max-width:900px){
+  /* 21.11 (Никита): на телефоне разделы в одну строку напротив логотипа, без «Реквизитов» (они в подвале) */
+  .nav{gap:14px}
+  .nav-links{gap:14px;font-size:14px;white-space:nowrap}
+  .nl-long{display:none}.nl-short{display:inline}
+  .nav .btn{margin-left:auto}
+  .services,.terms{grid-template-columns:minmax(0,1fr)}
+  .req{grid-template-columns:1fr;gap:40px}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .nav{top:10px;padding:8px 8px 8px 16px;width:calc(100% - 20px)}
+  .hero{padding-top:118px}
+  .hero-sub{font-size:16.5px}
+  .hero .btn{width:100%}
+  .btn-lg{white-space:normal;text-align:center;padding:16px 20px}
+  .stage{height:min(500px,70vh)}
+  #pigeon{height:84%}
+  .sec{padding-top:90px}
+  .svc{padding:24px;border-radius:22px}
+  .term{padding:24px;border-radius:20px}
+  .doc{grid-template-columns:32px minmax(0,1fr) auto;gap:14px;padding:20px 0}
+  .doc h3{font-size:17px}
+  .req dl{grid-template-columns:1fr;gap:2px}
+  .req dd{margin-bottom:10px}
+  footer{margin-top:90px;padding-top:48px}
+}
+
+@media (max-width:640px){.nav{gap:14px;padding:9px 14px}.logo{font-size:16px;gap:7px}.logo i{width:9px;height:9px;box-shadow:0 0 0 3px var(--accent-soft)}.nav-links{flex:1;justify-content:space-between;gap:10px;font-size:clamp(13px,calc((100vw - 170px)/13.5),15px)}.nl-req{display:none}}
+
+/* 21.11 (Никита): на ноутбуке первый экран в две колонки — текст слева, голубь справа целиком.
+   На большом мониторе (шире 1680) и телефоне — как было: голубь под текстом */
+@media (min-width:1025px) and (max-width:1680px){
+  .hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;gap:16px;max-width:1240px;margin:0 auto;padding:96px 40px 0;min-height:100vh;text-align:left}
+  .hero .wrap{padding:0;max-width:none;margin:0}
+  h1{font-size:clamp(44px,4.4vw,68px);margin:0}
+  .hero-sub{margin:24px 0 0}
+  .stage{height:min(calc(100vh - 120px),720px);margin-top:0}
+  .stage::after{bottom:14.5%}   /* тень под самыми лапами */
+}
+</style>
+<!-- three.js: на сайте берём свою копию (никаких внешних запросов, см. политику ПД); при открытии файлом с диска браузер свою копию не пускает, тогда для просмотра берём unpkg -->
+<script>document.write('<script type="importmap">{"imports":{"three":"'+(location.protocol==='file:'?'https://unpkg.com/three@0.170.0/build/three.module.min.js':'./vendor/three.module.min.js')+'"}}<\/script>')</script>
+</head>
+<body>
+
+<nav class="nav" aria-label="Навигация">
+  <a class="logo" href="#top"><i></i>nik.youre</a>
+  <div class="nav-links">
+    <a href="#uslugi"><span class="nl-long">Услуги и цены</span><span class="nl-short">Цены</span></a>
+    <a href="#docs">Документы</a>
+    <a href="#faq">Вопросы</a>
+    <a class="nl-req" href="#rekvizity">Реквизиты</a>
+  </div>
+</nav>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <p class="hero-kick in d1"><span class="nw">Персональное фитнес-сопровождение</span><span class="kd"> · </span><span class="nw">онлайн и в зале</span></p>
+    <h1 class="in d1"><span class="nw">Сами начнёте&nbsp;—</span> <span class="nw">сами и&nbsp;бросите.</span> <em>Поэтому я&nbsp;рядом</em></h1>
+    <p class="hero-sub in d2">Фитнес-тренер Никита Юрежев. Вижу каждую вашу тренировку, еду и&nbsp;вес, а&nbsp;пропадёте&nbsp;— напомню сам. Онлайн из любого города или вживую в&nbsp;DDX&nbsp;«Технопарк» в&nbsp;Москве.</p>
+  </div>
+
+  <!-- 3D-голубь (07_Голубь_3D, proj_prep.py → pigeon/). Пока грузится или если нет WebGL — обычная картинка. -->
+  <div class="stage in d4">
+    <div id="pigeon" aria-hidden="true">
+      <img src="pigeon/orig.webp" alt="" width="1122" height="1402">
+      <canvas id="pigeon-c" width="1122" height="1402"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- УСЛУГИ И ЦЕНЫ: что входит, цена в рублях, кто оказывает (ЗоЗПП ст. 10). Цены = Приложение 1 оферты -->
+<section class="sec" id="uslugi">
+  <div class="wrap">
+    <div class="price-head docs-head">
+      <h2 class="h2">Услуги и цены</h2>
+      <p>Цена не меняется до конца оплаченного срока. Доплат по&nbsp;ходу&nbsp;нет</p>
+    </div>
+
+    <div class="fmt" role="tablist" aria-label="Формат">
+      <button class="fmt-b" role="tab" aria-selected="true" aria-controls="g-online" id="t-online">Онлайн</button>
+      <button class="fmt-b" role="tab" aria-selected="false" aria-controls="g-gym" id="t-gym">Зал</button>
+    </div>
+
+    <!-- ОНЛАЙН. Крупно — цена за месяц (как на созвоне: «45, это 15 в месяц»), мелко — сумма за срок. Цены = Приложение 1 оферты -->
+    <div class="grp on" id="g-online" role="tabpanel" aria-labelledby="t-online">
+
+      <div class="period">
+        <span class="lbl" data-set="1">1 месяц</span>
+        <button class="sw" id="sw" role="switch" aria-checked="true" aria-label="Срок: 3 месяца"></button>
+        <span class="lbl on" data-set="3">3 месяца <span class="save">· выгоднее до 25%</span></span>
+      </div>
+      <p class="save-m">Выгоднее до 25%</p>
+
+      <div class="plans">
+        <article class="plan l">
+          <p class="nm" data-m1="Онлайн + 2 тренировки в зале" data-m3="Онлайн + 6 тренировок в зале">Онлайн + 6 тренировок в зале</p>
+          <div class="dots" data-m1="2" data-m3="6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="tagl">Раз в 2 недели — тренировка в зале вместо созвона</p>
+          <div class="sum"><span class="num" data-m1="27000" data-m3="21000">21 000 ₽</span><span class="per">в месяц</span></div>
+          <p class="save-b" data-m1="" data-m3="экономия 18 000 ₽ за 3 месяца">экономия 18 000 ₽ за 3 месяца</p>
+          <p class="bill" data-m1="оплата за месяц" data-m3="63 000 ₽ за 3 месяца">63 000 ₽ за 3 месяца</p>
+        </article>
+
+        <article class="plan pop">
+          <span class="badge-pop"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>Основной формат</span>
+          <p class="nm">Онлайн-ведение</p>
+          <p class="tagl">Из любого города. Отвечаю в Telegram в&nbsp;течение&nbsp;дня</p>
+          <div class="sum"><span class="num" data-m1="20000" data-m3="15000">15 000 ₽</span><span class="per">в месяц</span></div>
+          <p class="save-b" data-m1="" data-m3="экономия 15 000 ₽ за 3 месяца">экономия 15 000 ₽ за 3 месяца</p>
+          <p class="bill" data-m1="оплата за месяц" data-m3="45 000 ₽ за 3 месяца">45 000 ₽ за 3 месяца</p>
+        </article>
+
+        <article class="plan r">
+          <p class="nm" data-m1="Онлайн + 4 тренировки в зале" data-m3="Онлайн + 12 тренировок в зале">Онлайн + 12 тренировок в зале</p>
+          <div class="dots" data-m1="4" data-m3="12" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="tagl">Раз в неделю — тренировка в зале вместо созвона</p>
+          <div class="sum"><span class="num" data-m1="34000" data-m3="28000">28 000 ₽</span><span class="per">в месяц</span></div>
+          <p class="save-b" data-m1="" data-m3="экономия 18 000 ₽ за 3 месяца">экономия 18 000 ₽ за 3 месяца</p>
+          <p class="bill" data-m1="оплата за месяц" data-m3="84 000 ₽ за 3 месяца">84 000 ₽ за 3 месяца</p>
+        </article>
+      </div>
+      <details class="incd">
+        <summary>Что входит в онлайн-ведение</summary>
+        <ul class="inc" aria-label="В онлайн-ведение входит">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10l5-3v10l-5-3"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg>Стартовый созвон: цель и ваши особенности</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10 7h4M10 11h4M10 15h2"/></svg>Каждая тренировка расписана — в зале не гадаете</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"/></svg>Разбор техники по видео — как будто я рядом</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-4.4 0-8-3.6-8-8h16c0 4.4-3.6 8-8 8z"/><path d="M8 9c0-2 1-3 2-4M12 9c0-2 1-3 2-4M16 9c0-2 1-3 2-4"/></svg>Питание без запретов под вашу цель</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Правлю план по вашим результатам</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>Смотрю еду вечером, вес и талию раз в неделю</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10l5-3v10l-5-3"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg>Раз в 2 недели созвон: итоги и план</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Не прислали отчёт — напомню</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>На связи в Telegram с 9:00 до 22:00</li>
+      </ul>
+      </details>
+    </div>
+
+    <!-- ЗАЛ. Разовая — первой, как точка отсчёта: от неё считается экономия пакетов (цены реальные, Приложение 1 оферты) -->
+    <div class="grp" id="g-gym" role="tabpanel" aria-labelledby="t-gym" hidden>
+      <p class="anchor-line">Разовая тренировка — <b>4 500 ₽</b>. В пакете каждая дешевле</p>
+
+      <div class="plans">
+        <article class="plan l">
+          <p class="nm">Пакет 4 тренировки</p>
+          <div class="dots d4" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <p class="tagl">Попробовать формат</p>
+          <div class="sum"><span class="num">4 000 ₽</span><span class="per">за тренировку</span></div>
+          <p class="save-b">на 500 ₽ дешевле разовой</p>
+          <p class="bill">16 000 ₽ за пакет · экономия 2 000 ₽</p>
+        </article>
+
+        <article class="plan pop">
+          <span class="badge-pop"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>Самая низкая цена за тренировку</span>
+          <p class="nm">Пакет 12 тренировок</p>
+          <div class="dots d12" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="tagl">Полный цикл и лучшая цена за тренировку</p>
+          <div class="sum"><span class="num">3 500 ₽</span><span class="per">за тренировку</span></div>
+          <p class="save-b">на 1 000 ₽ дешевле разовой</p>
+          <p class="bill">42 000 ₽ за пакет · экономия 12 000 ₽</p>
+        </article>
+
+        <article class="plan r">
+          <p class="nm">Пакет 8 тренировок</p>
+          <div class="dots d8" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="tagl">Поставить технику и втянуться</p>
+          <div class="sum"><span class="num">3 750 ₽</span><span class="per">за тренировку</span></div>
+          <p class="save-b">на 750 ₽ дешевле разовой</p>
+          <p class="bill">30 000 ₽ за пакет · экономия 6 000 ₽</p>
+        </article>
+      </div>
+      <details class="incd">
+        <summary>Что входит в каждую тренировку</summary>
+        <ul class="inc" aria-label="В каждую тренировку входит">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><circle cx="16" cy="7" r="3"/><path d="M3 20c0-3 2.2-5 5-5s5 2 5 5M11 20c0-3 2.2-5 5-5s5 2 5 5"/></svg>Один на один, около 60 минут</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h3M18 12h3M6 8v8M18 8v8M9 10v4M15 10v4M9 12h6"/></svg>Постановка техники</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Программа тренировок</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-4.4 0-8-3.6-8-8h16c0 4.4-3.6 8-8 8z"/><path d="M8 9c0-2 1-3 2-4M12 9c0-2 1-3 2-4M16 9c0-2 1-3 2-4"/></svg>Рекомендации по питанию</li>
+      </ul>
+      </details>
+    </div>
+
+    <div class="fineprint">
+      <p>Абонемент в клуб DDX «Технопарк» оплачивается отдельно. Услуги оказывает лично ИП Юрежев Никита Иванович.</p>
+    </div>
+  </div>
+</section>
+<!-- ДОКУМЕНТЫ: вкладки по референсу Никиты (animated tabs). Полные тексты — страницы, которые собирает 11_Сайт/build_docs.py из 08_CRM/25_Оферта -->
+<section class="sec" id="docs">
+  <div class="wrap">
+    <div class="price-head docs-head">
+      <h2 class="h2">Документы</h2>
+      <p>Можно прочитать до оплаты</p>
+    </div>
+
+    <div class="dtabs">
+      <div class="dt-bar" role="tablist" aria-label="Документы">
+        <span class="dt-ind" aria-hidden="true"></span>
+        <button class="dt-b" role="tab" id="dt-1" aria-controls="dp-1" aria-selected="true">Оферта</button>
+        <button class="dt-b" role="tab" id="dt-2" aria-controls="dp-2" aria-selected="false" tabindex="-1">Данные</button>
+        <button class="dt-b" role="tab" id="dt-3" aria-controls="dp-3" aria-selected="false" tabindex="-1">Здоровье</button>
+        <button class="dt-b" role="tab" id="dt-4" aria-controls="dp-4" aria-selected="false" tabindex="-1">Фото</button>
+      </div>
+
+      <div class="dt-panel">
+        <div class="dt-pane" id="dp-1" role="tabpanel" aria-labelledby="dt-1">
+          <div class="dt-sheet" data-doc="oferta" aria-hidden="true"><!--mini:oferta--><div class="mh"><i></i>nik.youre</div><h4>ДОГОВОР-ОФЕРТА</h4><p class="ms">на оказание услуг персонального фитнес-сопровождения</p><p class="mm">г. Москва, редакция от 21.11.2026</p><p>Индивидуальный предприниматель Юрежев Никита Иванович (ОГРНИП 325632700069485, ИНН 637701887251, зарегистрирован 25.04.2025 Межрайонной ИФНС России № 24 по Самарской области, адрес: 446660, Самарская обл., Борский р-н, с. Борское, ул. Советская, д. 11), далее «Исполнитель», предлагает любому дееспособному физическому лицу от 18 лет, заказывающему услуги для личных нужд, далее «Заказчик», заключить договор на условиях ниже.</p><h5>1. Термины</h5><p>1.1. <strong>Оферта</strong> — этот документ, опубликованный на сайте Исполнителя по адресу nikyoure.ru/oferta.html.</p><p>1.2. <strong>Акцепт</strong> — оплата Услуг (полностью или предоплата, если она предусмотрена Офертой) после того, как Заказчик получил ссылку на Оферту и сообщение с Форматом, Периодом и ценой. Оплатив, Заказчик соглашается со всеми условиями Оферты (п. 3 ст. 438 ГК РФ).</p><p>1.3. <strong>Услуги</strong> — тренерское сопровождение в области физической культуры и здорового образа жизни: тренировки, программы, рекомендации по питанию, контроль и обратная связь. Услуги не являются медицинскими. Исполнитель не ставит диагнозы, не лечит и не назначает лекарственные препараты, гормональные и иные лекарственные средства. Исполнитель может рекомендовать спортивное питание и пищевые добавки (например, протеин, креатин): это общая рекомендация, а не медицинское назначение. При заболеваниях и приёме лекарств Заказчик согласует такие добавки с врачом. Любые вопросы о лекарствах Заказчик решает только с врачом.</p><!--/mini--></div>
+          <div class="dt-body">
+            <h3>Договор-оферта</h3>
+            <p class="dt-lead">Наш договор, открытый заранее. Оплата по ссылке означает, что вы с ним согласны: ничего подписывать и распечатывать не нужно.</p>
+            <ul class="checks">
+              <li>Что входит в каждый формат и цены</li>
+              <li>Перенос тренировки — не позднее чем за 10 часов</li>
+              <li>Отказаться можно в любой момент: возврат за неоказанное в течение 10 дней</li>
+              <li>Цена не меняется до конца оплаченного срока</li>
+            </ul>
+            <div class="dt-acts"><a class="dt-open" href="oferta.html">Читать полностью</a><a class="dt-pdf" href="oferta.html#print">Скачать PDF</a></div>
+          </div>
+        </div>
+
+        <div class="dt-pane" id="dp-2" role="tabpanel" aria-labelledby="dt-2" hidden>
+          <div class="dt-sheet" data-doc="policy" aria-hidden="true"><!--mini:policy--><div class="mh"><i></i>nik.youre</div><h4>ПОЛИТИКА ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h4><p class="ms">индивидуального предпринимателя Юрежева Никиты Ивановича</p><p class="mm">г. Москва, редакция от 21.11.2026</p><h5>1. Общие положения</h5><p>1.1. Политика объясняет, какие персональные данные обрабатывает индивидуальный предприниматель Юрежев Никита Иванович (ОГРНИП 325632700069485, ИНН 637701887251, адрес: 446660, Самарская обл., Борский р-н, с. Борское, ул. Советская, д. 11), далее «Оператор», зачем, на каком основании, как долго, кому передаёт и как вы можете управлять своими данными.</p><p>1.2. Политика принята во исполнение Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» (далее — Закон) и опубликована по адресу nikyoure.ru/policy.html.</p><p>1.3. Ответственный за организацию обработки персональных данных — сам Оператор. Связь по вопросам данных: почта nyurezhev@gmail.com, Telegram @Bio_robott.</p><p>1.4. Термины используются в значении Закона. «Оферта» — договор-оферта Оператора (nikyoure.ru/oferta.html).</p><h5>2. Чьи данные, какие, зачем, на каком основании и как долго</h5><p>2.1. <strong>Ответ на обращение и запись на бесплатный созвон или первую тренировку.</strong></p><p>Чьи: люди, которые сами написали Оператору.</p><p>Какие: имя, имя пользователя и ID в Telegram или Instagram*, номер телефона (если вы его сообщили), текст переписки, ваша цель и опыт тренировок со слов.</p><p>Основание: действия по вашему запросу до заключения договора (п. 5 ч. 1 ст. 6 Закона).</p><p>Срок: 1 год с последнего сообщения, если договор не заключён, или до вашего требования удалить данные.</p><p>2.2. <strong>Заключение и исполнение договора (оферты).</strong></p><!--/mini--></div>
+          <div class="dt-body">
+            <h3>Политика обработки персональных данных</h3>
+            <p class="dt-lead">Какие данные я храню, зачем, сколько и кому они передаются. Сайт ничего о вас не собирает: без форм, cookie и счётчиков.</p>
+            <ul class="checks">
+              <li>Только то, что нужно для работы с вами</li>
+              <li>Не публикую и не передаю для рекламы</li>
+              <li>Можно узнать, что о вас хранится, или попросить удалить</li>
+              <li>Отвечаю на такой запрос в течение 10 рабочих дней</li>
+            </ul>
+            <div class="dt-acts"><a class="dt-open" href="policy.html">Читать полностью</a><a class="dt-pdf" href="policy.html#print">Скачать PDF</a></div>
+          </div>
+        </div>
+
+        <div class="dt-pane" id="dp-3" role="tabpanel" aria-labelledby="dt-3" hidden>
+          <div class="dt-sheet" data-doc="health" aria-hidden="true"><!--mini:health--><div class="mh"><i></i>nik.youre</div><h4>Согласие на обработку сведений о состоянии здоровья</h4><p>Согласие подписывается отдельно от оплаты: в Telegram-боте Исполнителя после заполнения данных — нажатием кнопки подтверждения (простая электронная подпись, п. 12.3 оферты).</p><p>Я, <span class="f">ФИО</span>, <span class="f">дата рождения</span>, паспорт <span class="f">серия, номер, кем и когда выдан</span>, адрес: <span class="f">адрес</span>,</p><p>даю индивидуальному предпринимателю Юрежеву Никите Ивановичу (ОГРНИП 325632700069485, адрес: 446660, Самарская обл., Борский р-н, с. Борское, ул. Советская, д. 11) согласие на обработку сведений о состоянии моего здоровья: травмы, заболевания, операции, противопоказания к физическим нагрузкам, факт приёма лекарств по назначению врача, самочувствие на тренировках.</p><p>Цель: учитывать мои особенности при составлении программы тренировок и питания по договору-оферте (nikyoure.ru/oferta.html).</p><p>Действия: сбор, запись, систематизация, хранение, уточнение, использование, удаление; с использованием компьютера и без него.</p><p>Для переписки используется мессенджер Telegram, для программы тренировок — Fitness Form. Иным лицам не передаются.</p><p>Срок: до окончания услуг и 3 года после, либо до отзыва. Отозвать можно письмом на nyurezhev@gmail.com или сообщением в Чат; после отзыва Исполнитель прекращает обработку и удаляет данные в течение 30 дней, если закон не требует иного.</p><p><span class="f">Подпись / дата</span></p><!--/mini--></div>
+          <div class="dt-body">
+            <h3>Согласие на сведения о здоровье</h3>
+            <p class="dt-lead">Чтобы я всегда помнил о ваших травмах и особенностях и программа сразу была собрана с их учётом.</p>
+            <ul class="checks">
+              <li>Оформляется отдельно от оплаты, кнопкой в Telegram-боте</li>
+              <li>Не публикуется и не используется в рекламе</li>
+              <li>Отозвать можно в любой момент одним сообщением</li>
+            </ul>
+            <div class="dt-acts"><a class="dt-open" href="health.html">Читать полностью</a><a class="dt-pdf" href="health.html#print">Скачать PDF</a></div>
+          </div>
+        </div>
+
+        <div class="dt-pane" id="dp-4" role="tabpanel" aria-labelledby="dt-4" hidden>
+          <div class="dt-sheet" data-doc="photo" aria-hidden="true"><!--mini:photo--><div class="mh"><i></i>nik.youre</div><h4>Согласие на публикацию фото и видео (по желанию)</h4><p>Я, <span class="f">ФИО</span>, разрешаю ИП Юрежеву Никите Ивановичу публиковать мои фото и видео с тренировок и результаты «до/после»:</p><p><span class="box"></span> без лица и без имени <span class="box"></span> с лицом, без имени <span class="box"></span> с лицом и именем <span class="box"></span> мои отзывы и слова (без имени)</p><p>Где: Instagram*, Telegram, TikTok и сайт Исполнителя. Срок: до отзыва. Отозвать можно сообщением в Чат — опубликованное Исполнитель удаляет в течение 10 дней.</p><p><span class="f">Подпись / дата</span></p><!--/mini--></div>
+          <div class="dt-body">
+            <h3>Согласие на публикацию фото и видео</h3>
+            <p class="dt-lead">Только если вы сами захотите поделиться результатом. Без согласия ничего не публикую.</p>
+            <ul class="checks">
+              <li>Вы выбираете: без лица, с лицом, с именем или только ваши слова</li>
+              <li>Отозвать можно в любой момент</li>
+              <li>После отзыва удаляю опубликованное в течение 10 дней</li>
+            </ul>
+            <div class="dt-acts"><a class="dt-open" href="photo.html">Читать полностью</a><a class="dt-pdf" href="photo.html#print">Скачать PDF</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- После подачи уведомления в Роскомнадзор добавить сюда: «Внесён в реестр операторов персональных данных». -->
+  </div>
+</section>
+
+<!-- ВОПРОСЫ: бегущие ленты карточек (по референсу FAQ roller с 21st.dev). Первая копия — в разметке, повторы для бесконечной ленты добавляет скрипт (aria-hidden). Наведение или нажатие — пауза -->
+<section class="sec faq-sec" id="faq">
+  <div class="wrap">
+    <div class="price-head docs-head">
+      <h2 class="h2">Ответы на вопросы</h2>
+      <p>Коротко о главном</p>
+    </div>
+  </div>
+  <div class="fq-rows">
+    <div class="fq-row" style="--dur:60s">
+      <div class="fq-track">
+        <article class="fq">
+          <h3>Зачем нужна оферта?</h3>
+          <p>Это наш договор, только открытый заранее. В нём всё, о чём обычно договариваются на словах и потом путаются: что входит в ведение, когда я на связи, как переносить тренировки.</p>
+          <p>Вы читаете его до оплаты, я работаю ровно по нему. Оплата по ссылке и есть подпись, ничего распечатывать не нужно.</p>
+        </article>
+        <article class="fq">
+          <h3>Зачем вам данные о моём здоровье?</h3>
+          <p>Травмы, операции, что болит или болело: вы рассказываете это один раз, и я всегда помню о ваших особенностях. Через два месяца не придётся напоминать про колено, программа уже собрана с его учётом.</p>
+          <p>Закон относит такие сведения к особым, поэтому на них оформляется отдельное согласие. Основная база на моём компьютере в Москве, переписка идёт в Telegram. Не публикую и не передаю для рекламы. Кто ещё видит данные — в Политике.</p>
+          <!-- После подачи уведомления в Роскомнадзор добавить: «Я внесён в реестр операторов персональных данных Роскомнадзора». -->
+        </article>
+        <article class="fq">
+          <h3>Я не в Москве, это можно?</h3>
+          <p>Да, онлайн-ведение работает из любого города и страны. Нужны зал или место для тренировок и Telegram. Тренировки вживую проходят только в DDX «Технопарк» в Москве.</p>
+        </article>
+        <article class="fq">
+          <h3>Онлайн — это просто программа?</h3>
+          <p>Программа только начало. Дальше я смотрю, как вы её делаете, и правлю план по результатам.</p>
+        </article>
+      </div>
+    </div>
+    <div class="fq-row rev" style="--dur:45s">
+      <div class="fq-track">
+        <article class="fq">
+          <h3>Подойдёт, если я никогда не занимался?</h3>
+          <p>Да. Программа строится от вашего уровня. С новичком начинаем с техники и базовых движений, с опытным ищем, где застряли.</p>
+        </article>
+        <article class="fq">
+          <h3>Я уже бросал. Здесь будет так же?</h3>
+          <p>Один на один с программой вы не остаётесь: я смотрю тренировки, еду и вес, раз в 2 недели созваниваемся и правим план. Не прислали отчёт — напомню сам.</p>
+        </article>
+        <article class="fq">
+          <h3>Сколько времени нужно на тренировки?</h3>
+          <p>Программа рассчитана на 3 тренировки в неделю по часу. Если времени меньше, подстроим.</p>
+        </article>
+      </div>
+    </div>
+    <div class="fq-row" style="--dur:70s">
+      <div class="fq-track">
+        <article class="fq">
+          <h3>Придётся сидеть на жёсткой диете?</h3>
+          <p>Нет. Считаем белки, жиры и углеводы под цель и собираем рацион из продуктов, которые вы и так едите. Захотелось пиццу, вписываем её в план.</p>
+        </article>
+        <article class="fq">
+          <h3>Что будет после оплаты?</h3>
+          <p>Начинаем не позже чем через 3 рабочих дня. Стартовый созвон по видео: цель, питание и как вам удобнее присылать отчёты.</p>
+          <p>Согласие на сведения о здоровье подписываете кнопкой в Telegram-боте, программа приходит в приложение Fitness Form.</p>
+        </article>
+        <article class="fq">
+          <h3>Мне нужен тренер рядом</h3>
+          <p>Каждое видео подхода я разбираю, как будто стою рядом. А если вы в Москве, можно добавить тренировки в зале: форматы «Онлайн + зал».</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- РЕКВИЗИТЫ (ЗоЗПП ст. 9–10; банку для проверки магазина) + иконки соцсетей и почты -->
+<footer id="rekvizity">
+  <div class="ft">
+    <div class="ft-soc">
+      <a class="soc" href="https://instagram.com/nik.youre" target="_blank" rel="noopener" aria-label="Instagram* @nik.youre" title="Instagram* @nik.youre"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.3-2h5.2l1.3 2h1.6A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.4"/><circle cx="16.8" cy="9.3" r=".6" fill="currentColor" stroke="none"/></svg></a>
+      <a class="soc" href="https://www.tiktok.com/@nik.youre1" target="_blank" rel="noopener" aria-label="TikTok @nik.youre1" title="TikTok @nik.youre1"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.3 2.3 1.8 3.9 4.1 4v3.1c-1.5.1-2.9-.4-4.1-1.2v6.4c0 3.6-2.6 5.7-5.6 5.7-3.2 0-5.6-2.5-5.6-5.5 0-3.4 2.9-5.9 6.5-5.4v3.3c-1.6-.4-3.3.6-3.3 2.2 0 1.3 1 2.3 2.3 2.3 1.4 0 2.4-.9 2.4-2.6V3z"/></svg></a>
+      <a class="soc" href="https://t.me/Miogolick" target="_blank" rel="noopener" aria-label="Telegram-канал Miogolick" title="Telegram-канал Miogolick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.2 4.6 2.8 11.7l5.9 2 2.2 6.2 3.2-3.8 4.8 3.6z"/><path d="m8.7 13.7 12.5-9.1"/></svg></a>
+      <a class="soc" href="mailto:nyurezhev@gmail.com" aria-label="Почта nyurezhev@gmail.com" title="Почта nyurezhev@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></a>
+    </div>
+    <dl class="ft-req">
+      <dt>Исполнитель</dt><dd>ИП Юрежев Никита Иванович</dd>
+      <dt>ОГРНИП</dt><dd>325632700069485</dd>
+      <dt>ИНН</dt><dd>637701887251</dd>
+      <dt>Регистрация</dt><dd>25.04.2025, Межрайонная ИФНС России № 24 по Самарской области</dd>
+    </dl>
+  </div>
+</footer>
+
+<script type="module">
+import * as THREE from 'three';
+try {
+// 3D v1 (21.11): «оригинал на 3D-форме». Форма — модель Tripo, сглаженная (proj_prep.py); цвет спереди — сама картинка,
+// спроецированная на форму, поэтому в покое голубь пиксель в пиксель как оригинал. Голова и шея выше цепи
+// поворачиваются за курсором как настоящий объём; бока и затылок, которых нет на картинке, — цвет модели.
+const cfg = await (await fetch('pigeon/pigeon.json')).json();
+const bin = await (await fetch('pigeon/pigeon.bin')).arrayBuffer();
+// файл ужат (pack_site.py): числа хранятся целыми, здесь переводим обратно в дробные
+const arr = (k, T) => {
+  const m = cfg.q[k];
+  if (m.t === 'idx16') return new Uint32Array(new Uint16Array(bin, m.off, m.n));
+  const src = m.t === 'u8' ? new Uint8Array(bin, m.off, m.n) : new Uint16Array(bin, m.off, m.n), top = m.t === 'u8' ? 255 : 65535;
+  const out = new Float32Array(m.n);
+  for (let i = 0; i < m.n; i++) { const c = i % m.w; out[i] = m.lo[c] + src[i] / top * (m.hi[c] - m.lo[c]); }
+  return out;
+};
+const [W, H] = cfg.img, [s, sy, tx, ty] = cfg.proj;
+const toY = v => (ty - v) / (s * sy);                       // строка картинки → высота модели
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(arr('pos', Float32Array), 3));
+geo.setAttribute('nrm', new THREE.BufferAttribute(arr('nrm', Float32Array), 3));
+geo.setAttribute('puv', new THREE.BufferAttribute(arr('uv', Float32Array), 2));
+geo.setAttribute('vis', new THREE.BufferAttribute(arr('vis', Float32Array), 1));
+geo.setAttribute('edge', new THREE.BufferAttribute(arr('edge', Float32Array), 1));
+geo.setAttribute('col', new THREE.BufferAttribute(arr('col', Float32Array), 3));
+geo.setIndex(new THREE.BufferAttribute(arr('idx', Uint32Array), 1));
+
+const tex = await new THREE.TextureLoader().loadAsync('pigeon/orig.webp');
+tex.colorSpace = THREE.NoColorSpace; tex.flipY = false; tex.minFilter = THREE.LinearFilter; tex.generateMipmaps = false;
+// рисунок перьев для боков и макушки, которых нет на картинке (кусок лба, только светотень)
+const fea = await new THREE.TextureLoader().loadAsync('pigeon/feathers.png');
+fea.colorSpace = THREE.NoColorSpace; fea.wrapS = fea.wrapT = THREE.MirroredRepeatWrapping;
+
+// шея: от верхнего края цепи (по бокам ~540 строка) голова поворачивается, ниже всё стоит
+const pos = geo.attributes.position.array;
+const yNeck = toY(548), yFull = toY(430);
+let zmin = 1e9, zmax = -1e9;
+for (let i = 0; i < pos.length; i += 3) if (pos[i + 1] > yNeck) { zmin = Math.min(zmin, pos[i + 2]); zmax = Math.max(zmax, pos[i + 2]); }
+const pivot = new THREE.Vector3((561 - tx) / s, yNeck, (zmin + zmax) / 2);
+
+const mat = new THREE.RawShaderMaterial({
+  uniforms: { dbg: { value: { col: 1, img: 2, vis: 3 }[new URLSearchParams(location.search).get('dbg')] || 0 }, img: { value: tex }, fea: { value: fea },
+              feaScale: { value: new THREE.Vector2(s / cfg.feathers[0], s / cfg.feathers[1]) },
+              yaw: { value: 0 }, pitch: { value: 0 }, turn: { value: 0 }, pivot: { value: pivot }, y0: { value: yNeck }, y1: { value: yFull } },
+  vertexShader: `precision highp float;
+    uniform mat4 projectionMatrix, modelViewMatrix; uniform float yaw, pitch, y0, y1; uniform vec3 pivot;
+    attribute vec3 position, col, nrm; attribute vec2 puv; attribute float vis, edge;
+    varying vec2 vUv; varying float vVis, vStretch, vEdge, vReveal; varying vec3 vCol, vP, vN;
+    void main(){
+      vEdge = edge; vUv = puv; vVis = vis; vCol = col; vP = position; vN = nrm;
+      float w = smoothstep(y0, y1, position.y);          // 0 у цепи → 1 у головы: шея гнётся плавно
+      vec3 p = position - pivot;
+      float a = yaw * w, b = pitch * w;
+      p = vec3(p.x, p.y * cos(b) - p.z * sin(b), p.y * sin(b) + p.z * cos(b));
+      p = vec3(p.x * cos(a) + p.z * sin(a), p.y, -p.x * sin(a) + p.z * cos(a));
+      // во сколько раз картинка растянута сейчас по сравнению с покоем: крутые бока, развёрнутые к зрителю, — полосы
+      vec3 n = normalize(nrm + 1e-5);
+      float nz = n.y * sin(b) + n.z * cos(b); nz = -n.x * sin(a) + nz * cos(a);
+      vStretch = nz / max(n.z, 0.03);
+      vReveal = nz - n.z;                                // > 0: бок поворачивается к зрителю
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(p + pivot, 1.0);
+    }`,
+  fragmentShader: `precision highp float;
+    uniform sampler2D img, fea; uniform vec2 feaScale; uniform float turn; uniform int dbg; varying vec2 vUv; varying float vVis, vStretch, vEdge, vReveal; varying vec3 vCol, vP, vN;
+    void main(){
+      vec4 o = texture2D(img, vUv);
+      float k = clamp(vVis, 0.0, 1.0) * smoothstep(0.3, 0.9, o.a);
+      if (vVis > 0.845 && vVis < 0.955) k *= 1.0 - smoothstep(0.04, 0.3, turn) * (1.0 - clamp((vVis - 0.85) / 0.1, 0.0, 1.0));   // кайма вокруг клюва (край, тень): на повороте — перья подбородка
+      if (vVis < 1.5) k *= 1.0 - smoothstep(1.8, 3.2, vStretch);
+      // нарисованный контур головы у края картинки: на открывающемся боку плавно меняем на перья, иначе внутри головы «шов»
+      if (vVis < 1.5) k *= 1.0 - smoothstep(0.0, 0.12, vReveal) * (1.0 - smoothstep(5.0, 30.0, vEdge));   // сильно растянутую картинку меняем на перья (в покое = 1, не трогает); клюв (vis = 2) не трогаем
+      if (!gl_FrontFacing) k = vVis < -0.5 ? 0.0 : smoothstep(0.3, 0.9, o.a);   // изнанка низа клюва — ровным цветом клюва (картинкой — полосы)   // изнанка в щелях — тем же цветом картинки, щель не видна
+      // перья там, где картинки нет: рисунок лба по трём плоскостям (бок, верх, перед) — без растяжек на изгибах
+      vec3 n = pow(abs(normalize(vN + 1e-5)), vec3(4.0)); n /= n.x + n.y + n.z;
+      float d = texture2D(fea, vP.zy * feaScale).r * n.x + texture2D(fea, vP.xz * feaScale).r * n.y + texture2D(fea, vP.xy * feaScale).r * n.z;
+      vec3 side = vCol * (1.0 + (d - 0.5) * ((vVis < -0.5 || (vVis > 1.1 && vVis < 1.5) || abs(vVis - 0.86) < 0.004) ? 0.0 : 1.2));
+      side *= mix(0.82, 1.0, clamp(normalize(vN + 1e-5).z * 1.4 + 0.25, 0.0, 1.0));   // бока и затылок чуть темнее — объём, как на картинке   // клюв (vis = -1 низ, 1.25 верх) — ровный цвет, без перьев
+      gl_FragColor = vec4(mix(side, o.rgb, k), 1.0);
+      // клюв на повороте: бок, который отворачивается, темнее, который поворачивается к нам — чуть светлее (в покое = 1),
+      // иначе клюв сливается с лицом
+      if (vVis > 1.1 && vVis < 1.5 || abs(vVis - 0.86) < 0.004) gl_FragColor.rgb *= 1.0 + 0.25 * clamp(vReveal, 0.0, 0.6) - 0.9 * clamp(-vReveal, 0.0, 0.5);
+      if (dbg == 1) gl_FragColor = vec4(vCol, 1.0);              // проверка: только цвет модели
+      if (dbg == 2) gl_FragColor = vec4(o.rgb, 1.0);             // только картинка
+      if (dbg == 3) gl_FragColor = vec4(vec3(k), 1.0);           // где картинка, где модель
+    }`,
+});
+mat.side = THREE.DoubleSide;    // в модели Tripo щели у клюва и век: сквозь них видна изнанка с тем же цветом, а не белый фон
+const mesh = new THREE.Mesh(geo, mat);
+const scene = new THREE.Scene(); scene.add(mesh);
+// камера = «проектор»: та же точка зрения, что у картинки
+const cam = new THREE.OrthographicCamera(-tx / s, (W - tx) / s, ty / (s * sy), (ty - H) / (s * sy), 0.01, 100);
+cam.position.set(0, 0, 10);
+const cv = document.getElementById('pigeon-c');
+const r = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true, preserveDrawingBuffer: true });
+r.setPixelRatio(1); r.setSize(W, H, false); r.outputColorSpace = THREE.LinearSRGBColorSpace;
+
+const q = new URLSearchParams(location.search);
+const fixed = q.has('mx') ? { x: +q.get('mx'), y: +q.get('my') || 0 } : null;
+const YAW = 20 * Math.PI / 180   // 21.11: было 25 — на большом повороте слишком виден «додуманный» бок
+ , PITCH = 12 * Math.PI / 180;
+let target = { x: 0, y: 0 }, cur = { x: 0, y: 0 }, lastMove = -1e9;
+function aim(cx, cy) {
+  const b = cv.getBoundingClientRect();
+  const hx = b.left + b.width * 0.5, hy = b.top + b.height * (310 / H);
+  target.x = Math.max(-1, Math.min(1, (cx - hx) / (innerWidth * 0.45)));
+  target.y = Math.max(-1, Math.min(1, (cy - hy) / (innerHeight * 0.45)));
+  lastMove = performance.now();
+}
+const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const touchOnly = matchMedia('(hover: none)').matches;   // телефон и планшет: мыши нет
+let look = { x: 0, y: 0 }, nextLook = performance.now() + 1200;   // кто просит меньше анимации — голубь смотрит прямо
+if (!calm) addEventListener('mousemove', e => aim(e.clientX, e.clientY));
+if (!calm) addEventListener('touchstart', e => aim(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+if (!calm) addEventListener('touchmove', e => aim(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+function frame(t) {
+  if (fixed) cur = fixed;
+  else {
+    let ease = 0.08;
+    if (t - lastMove > 3500) {
+      if (touchOnly && !calm) {                  // телефон (Никита 21.11): без касаний сам оглядывается — взгляд в точку, пауза, иногда прямо
+        if (t > nextLook) {
+          look = Math.random() < 0.3 ? { x: 0, y: 0 } : { x: (Math.random() * 2 - 1) * 0.75, y: (Math.random() * 2 - 1) * 0.35 + 0.1 };
+          nextLook = t + 1800 + Math.random() * 2600;
+        }
+        target.x = look.x; target.y = look.y; ease = 0.045;   // медленнее, чем за пальцем: спокойно, не дёргано
+      } else { target.x *= 0.96; target.y *= 0.96; }          // компьютер: давно не двигали мышь — снова смотрит прямо
+    }
+    cur.x += (target.x - cur.x) * ease; cur.y += (target.y - cur.y) * ease;
+  }
+  mat.uniforms.yaw.value = cur.x * YAW;        // курсор справа → голова поворачивается вправо (к курсору)
+  mat.uniforms.pitch.value = cur.y * PITCH;    // курсор ниже → голова наклоняется вниз
+  mat.uniforms.turn.value = Math.hypot(cur.x, cur.y);
+  r.render(scene, cam);
+  if (!shown) { shown = true; cv.parentElement.classList.add('live'); }
+  if (!fixed && onScreen) requestAnimationFrame(frame); else running = false;
+}
+let shown = false, onScreen = true, running = true;
+new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; if (onScreen && !running) { running = true; requestAnimationFrame(frame); } }).observe(cv);
+requestAnimationFrame(frame);
+// для записи видео по кадрам: поворот головы задаётся напрямую (x, y от -1 до 1)
+window.__pose = (x, y) => { mat.uniforms.yaw.value = x * YAW; mat.uniforms.pitch.value = y * PITCH; mat.uniforms.turn.value = Math.hypot(x, y); r.render(scene, cam); };
+} catch (e) { console.warn('голубь: остаётся картинка', e); }
+</script>
+<script>
+// цены: вкладки «Онлайн / Зал», переключатель срока, перелистывание цифр, конфетти при выборе 3 месяцев
+(()=>{
+  const sw=document.getElementById('sw'),sec=document.getElementById('uslugi');
+  if(!sw||!sec)return;
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const online=document.getElementById('g-online');
+  const fmt=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽';
+  const tween=(el,to)=>{
+    const from=+el.dataset.cur; el.dataset.cur=to;
+    if(still||from===to){el.textContent=fmt(to);return}
+    const t0=performance.now(),d=500;
+    const step=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3);el.textContent=fmt(from+(to-from)*e);if(k<1)requestAnimationFrame(step)};
+    requestAnimationFrame(step);
+  };
+  online.querySelectorAll('.num').forEach(n=>n.dataset.cur=n.dataset.m3);
+  // подписи, плашки экономии и точки-тренировки под выбранный срок
+  const paint=m=>online.querySelectorAll('[data-m1]').forEach(el=>{
+    if(el.classList.contains('num'))return;
+    const v=el.dataset['m'+m];
+    if(el.classList.contains('dots')){const n=+v;el.querySelectorAll('i').forEach((d,i)=>d.classList.toggle('off',i>=n));el.style.gridTemplateColumns=`repeat(${Math.min(n,6)},12px)`;return}
+    el.textContent=v;el.hidden=!v;
+  });
+  paint(3);
+  const isThree=()=>sw.getAttribute('aria-checked')==='true';
+  const set=m=>{
+    const three=m===3;
+    sw.setAttribute('aria-checked',three);sw.setAttribute('aria-label','Срок: '+(three?'3 месяца':'1 месяц'));
+    online.querySelectorAll('.period .lbl').forEach(l=>l.classList.toggle('on',+l.dataset.set===m));
+    online.querySelectorAll('.num').forEach(n=>tween(n,+n.dataset['m'+m]));
+    paint(m);
+    if(three&&!still)confetti(sw);
+  };
+  sw.addEventListener('click',()=>set(isThree()?1:3));
+  online.querySelectorAll('.period .lbl').forEach(l=>l.addEventListener('click',()=>{const m=+l.dataset.set;if((m===3)!==isThree())set(m)}));
+
+  // вкладки: карточки заново разъезжаются при переключении
+  const tabs=[...sec.querySelectorAll('.fmt-b')];
+  const show=t=>{
+    tabs.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;
+      const g=document.getElementById(x.getAttribute('aria-controls'));g.hidden=!on;g.classList.toggle('on',on);
+      const pl=g.querySelector('.plans');pl.classList.remove('seen');if(on)requestAnimationFrame(()=>requestAnimationFrame(()=>pl.classList.add('seen')));});
+    sec.querySelector('.fmt').dataset.at=tabs.indexOf(t);
+  };
+  tabs.forEach((t,i)=>{t.addEventListener('click',()=>show(t));
+    t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();show(n)}})});
+
+  function confetti(src){
+    const r=src.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+    const c=document.createElement('canvas'),dpr=Math.min(2,devicePixelRatio||1);
+    c.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:99';
+    c.width=innerWidth*dpr;c.height=innerHeight*dpr;document.body.appendChild(c);
+    const g=c.getContext('2d');g.scale(dpr,dpr);
+    const cols=['#ff6a00','#ff9a4d','#ffd2b0','#0a0a0b','#b3b3ba'];
+    const ps=Array.from({length:50},()=>{const a=(-90+(Math.random()-.5)*60)*Math.PI/180,v=7+Math.random()*7;
+      return{x:cx,y:cy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:2.5+Math.random()*2.5,c:cols[Math.random()*cols.length|0],life:0}});
+    let f=0;(function draw(){g.clearRect(0,0,innerWidth,innerHeight);
+      ps.forEach(p=>{p.vx*=.96;p.vy=p.vy*.96+.45;p.x+=p.vx;p.y+=p.vy;p.life++;
+        g.globalAlpha=Math.max(0,1-p.life/110);g.fillStyle=p.c;g.beginPath();g.arc(p.x,p.y,p.r,0,7);g.fill()});
+      if(++f<115)requestAnimationFrame(draw);else c.remove()})();
+  }
+  // карточки разъезжаются, когда раздел попадает в экран
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){sec.querySelectorAll('.grp.on .plans').forEach(p=>p.classList.add('seen'));io.disconnect()}}),{threshold:.15});
+  io.observe(sec.querySelector('.grp.on .plans'));
+})();
+</script>
+
+<script>
+// цены на телефоне: все три карточки веером, как на ПК (Никита 21.11)
+(()=>{
+  const mq=matchMedia('(max-width:900px)');
+  document.querySelectorAll('.plans').forEach(pl=>{
+    const cards=[...pl.querySelectorAll('.plan')],n=cards.length;
+    let act=Math.max(0,cards.findIndex(c=>c.classList.contains('pop'))),shown=false,dx=0;
+    const nav=document.createElement('div');nav.className='car-dots';
+    cards.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Карточка '+(i+1));
+      b.addEventListener('click',()=>{act=i;place()});nav.appendChild(b)});
+    pl.after(nav);
+    const dots=[...nav.children];
+    const wrap=o=>{o=((o%n)+n)%n;return o>n/2?o-n:o};          // по кругу: слева одна, справа одна
+    const place=()=>{
+      if(!mq.matches){cards.forEach(c=>{['--x','--y','--s','--r','--z'].forEach(k=>c.style.removeProperty(k));c.classList.remove('cur')});return}
+      const cw=cards[0].offsetWidth,step=cw*.62,pos=act-dx/step;
+      cards.forEach((c,i)=>{
+        const o=shown?wrap(i-pos):0,a=shown?Math.min(1,Math.abs(o)):(i===act?0:1);
+        c.style.setProperty('--x',(o*step).toFixed(1)+'px');
+        c.style.setProperty('--y',(shown?a*18-10*(1-a):40).toFixed(1)+'px');
+        c.style.setProperty('--s',(1-a*.16).toFixed(3));
+        c.style.setProperty('--r',(-Math.max(-1,Math.min(1,o))*16).toFixed(1)+'deg');
+        c.style.setProperty('--z',String(10-Math.round((shown?Math.abs(o):a)*3)));
+        c.style.setProperty('--a',a.toFixed(3));   // 0 — карточка по центру, 1 — сбоку: текст боковых гаснет
+      });
+      dots.forEach((b,i)=>b.classList.toggle('on',i===act));
+      cards.forEach((c,i)=>c.classList.toggle('cur',i===act));
+    };
+    // свайп пальцем: карточки едут за пальцем, отпустил — встают по местам
+    let x0=null,y0=0,moved=false;
+    pl.addEventListener('pointerdown',e=>{if(!mq.matches)return;x0=e.clientX;y0=e.clientY;moved=false;dx=0});
+    pl.addEventListener('pointermove',e=>{if(x0===null)return;const d=e.clientX-x0;
+      if(!moved&&Math.abs(d)>8&&Math.abs(d)>Math.abs(e.clientY-y0)){moved=true;pl.classList.add('drag');pl.setPointerCapture(e.pointerId)}
+      if(moved){dx=d;place()}});
+    const up=e=>{if(x0===null)return;pl.classList.remove('drag');
+      if(moved){if(Math.abs(dx)>40)act=(act-Math.sign(dx)+n)%n}
+      else{const c=e.target.closest('.plan');if(c){const i=cards.indexOf(c);if(i!==act){act=i}}}
+      x0=null;dx=0;place()};
+    pl.addEventListener('pointerup',up);pl.addEventListener('pointercancel',up);
+    addEventListener('resize',place);
+    // при появлении (и при переключении «Онлайн/Зал») боковые выезжают из-за основной
+    let tm;
+    new MutationObserver(()=>{
+      const seen=pl.classList.contains('seen');
+      if(seen&&!shown){act=Math.max(0,cards.findIndex(c=>c.classList.contains('pop')));pl.classList.add('intro');shown=true;place();clearTimeout(tm);tm=setTimeout(()=>pl.classList.remove('intro'),1600)}
+      else if(!seen&&shown){shown=false;place()}
+    }).observe(pl,{attributes:true,attributeFilter:['class']});
+    place();
+  });
+})();
+</script>
+
+<script>
+// документы: вкладки с плавающей подложкой и появлением содержимого
+(()=>{
+  const bar=document.querySelector('.dt-bar'); if(!bar)return;
+  const ind=bar.querySelector('.dt-ind'), tabs=[...bar.querySelectorAll('.dt-b')];
+  const place=t=>{ind.style.width=t.offsetWidth+'px';ind.style.transform=`translateX(${t.offsetLeft}px)`};
+  const show=t=>{
+    tabs.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;
+      const p=document.getElementById(x.getAttribute('aria-controls'));p.hidden=!on;p.classList.remove('in');
+      if(on){void p.offsetWidth;p.classList.add('in')}});
+    place(t);
+  };
+  tabs.forEach((t,i)=>{t.addEventListener('click',()=>show(t));
+    t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();show(n)}})});
+  const cur=()=>tabs.find(t=>t.getAttribute('aria-selected')==='true');
+  place(cur()); addEventListener('resize',()=>place(cur()));
+  document.fonts&&document.fonts.ready.then(()=>place(cur()));
+})();
+</script>
+<script>
+// вопросы: ленты крутятся бесконечно — дублируем карточки, пока половина ленты не станет шире экрана
+(()=>{
+  const rows=[...document.querySelectorAll('.fq-row')]; if(!rows.length)return;
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  rows.forEach(row=>{
+    const track=row.querySelector('.fq-track');
+    const cards=[...track.children];
+    const half=document.createElement('div'); half.className='fq-half';
+    cards.forEach(c=>half.appendChild(c)); track.appendChild(half);
+    if(still)return;
+    let i=0; while(half.scrollWidth<row.clientWidth+400&&i<6){cards.forEach(c=>{const k=c.cloneNode(true);k.setAttribute('aria-hidden','true');half.appendChild(k)});i++}
+    const twin=half.cloneNode(true); twin.setAttribute('aria-hidden','true'); track.appendChild(twin);
+    // на телефоне наведения нет: нажатие ставит ленту на паузу и снимает с неё
+    row.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')row.classList.toggle('paused')});
+  });
+})();
+</script>
+</body>
+</html>
