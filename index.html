@@ -250,6 +250,22 @@ h1 .nw,.hero-kick .nw{white-space:nowrap}
 @media (max-width:640px){.plans .plan{padding-left:18px;padding-right:18px}.plans .save-b{white-space:nowrap}}
 @media (max-width:370px){.plans .save-b{font-size:12px;padding:5px 10px}}
 
+/* оплата частями (24.11): официальные логотипы Сплит (split.yandex.ru) и Долями (пакет brand.tbank.ru), файлы локально в pay/.
+   Логотипы не перекрашиваем и не растягиваем, вокруг — поле не меньше высоты знака; Долями — чёрный на светлом фоне */
+.parts{display:flex;align-items:center;justify-content:center;gap:18px;width:max-content;max-width:100%;margin:34px auto 0;
+  padding:12px 14px 12px 24px;border-radius:999px;background:var(--panel)}
+.parts p{font-size:14.5px;line-height:1.35;color:var(--muted);text-align:left}
+.parts p b{display:block;font-weight:600;color:var(--ink);font-size:15px}
+.parts .lg{display:flex;align-items:center;gap:0;background:#fff;border-radius:999px;padding:0 6px}
+.parts .lg img{display:block;width:auto}
+.parts .lg .sp{height:21px;margin:12px 16px}
+.parts .lg .dl{height:27px;margin:9px 12px}
+.parts .lg i{width:1px;height:22px;background:var(--line)}
+@media (max-width:640px){
+  .parts{flex-direction:column;gap:12px;border-radius:24px;padding:16px 16px 14px;width:100%}
+  .parts p{text-align:center}
+}
+
 /* оплата и возврат */
 .terms{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:48px}
 .term{background:var(--panel);border-radius:24px;padding:30px}
@@ -521,6 +537,10 @@ footer{margin-top:110px;border-top:1px solid var(--line);background:#fff}
           <p class="bill" data-m1="оплата за месяц" data-m3="84 000 ₽ за 3 месяца">84 000 ₽ за 3 месяца</p>
         </article>
       </div>
+      <div class="parts">
+        <p><b>Можно оплатить частями</b>4 платежа раз в 2 недели, без переплат</p>
+        <div class="lg"><img class="sp" src="pay/split.svg" alt="Сплит" width="85" height="21"><i></i><img class="dl" src="pay/dolyame.svg" alt="Долями" width="142" height="27"></div>
+      </div>
       <details class="incd">
         <summary>Что входит в онлайн-ведение</summary>
         <ul class="inc" aria-label="В онлайн-ведение входит">
@@ -569,6 +589,10 @@ footer{margin-top:110px;border-top:1px solid var(--line);background:#fff}
           <p class="save-b">на 750 ₽ дешевле разовой</p>
           <p class="bill">30 000 ₽ за пакет · экономия 6 000 ₽</p>
         </article>
+      </div>
+      <div class="parts">
+        <p><b>Можно оплатить частями</b>4 платежа раз в 2 недели, без переплат</p>
+        <div class="lg"><img class="sp" src="pay/split.svg" alt="Сплит" width="85" height="21"><i></i><img class="dl" src="pay/dolyame.svg" alt="Долями" width="142" height="27"></div>
       </div>
       <details class="incd">
         <summary>Что входит в каждую тренировку</summary>
